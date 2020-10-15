@@ -1,5 +1,5 @@
-copy env file
-docker-compose build
-docker-compose up -d
-php artisan migrate
+copy env file <br>
+docker-compose build <br>
+docker-compose up -d <br>
+php artisan migrate <br>
 php artisan emails:send
