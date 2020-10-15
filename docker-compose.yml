@@ -1,0 +1,50 @@
+version: "3.3"
+services:
+
+    mysql:
+      image: mysql:5.7
+      container_name: mail-mysql
+      working_dir: /application
+      restart: always
+      volumes:
+        - .:/application
+        - mysql-volume:/var/lib/mysql
+      environment:
+        - MYSQL_ROOT_PASSWORD=ftDfUbkO7v
+        - MYSQL_DATABASE=mail
+        - MYSQL_USER=mail
+        - MYSQL_PASSWORD=8mkltyaTM0
+      ports:
+        - "33062:3306"
+
+    webserver:
+      image: nginx:alpine
+      container_name: mail-webserver
+      working_dir: /application
+      restart: always
+      volumes:
+          - .:/application
+          - ./phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      ports:
+       - "8082:80"
+
+    php-fpm:
+      build: phpdocker/php-fpm
+      container_name: mail-php-fpm
+      working_dir: /application
+      restart: always
+      environment:
+        - DB_CONNECTION=mysql
+        - DB_HOST=mail-mysql
+        - DB_PORT=3306
+        - DB_DATABASE=mail
+        - DB_USERNAME=mail
+        - DB_PASSWORD=8mkltyaTM0
+        - PHP_IDE_CONFIG=serverName=mail-service
+      volumes:
+        - .:/application
+        - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
+
+volumes:
+  mysql-volume:
+  mysql-volume-testing:
