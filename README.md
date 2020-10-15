@@ -4,4 +4,5 @@ docker-compose exec php-fpm bash <br>
 composer install <br>
 php artisan migrate <br>
 change smtp settings in app/Jobs/SendEmail.php <br>
+exit
 php artisan emails:send
